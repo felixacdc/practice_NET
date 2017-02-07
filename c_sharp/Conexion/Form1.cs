@@ -70,5 +70,29 @@ namespace PruebaConexion
               MessageBox.Show("Imposible de regitrar, El registro ya existe");
             }
         }
+
+        private void txtId_TextChanged(object sender, EventArgs e)
+        {
+            if(RbModificar.Checked==true)
+            {
+              if(c.personaRegistrada(Convert.ToInt32(txtId.Text))>0)
+              {
+                  c.llenarTexBoxConsulta(Convert.ToInt32(txtId.Text), txtNombre, txtApellidos, dtpFecha);
+                  BtnModificar.Enabled = true;
+              }
+              else
+              {
+                  txtNombre.Text = "";
+                  txtApellidos.Text = "";
+                  BtnModificar.Enabled = false;
+              }
+            }
+        }
+
+        private void BtnModificar_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(c.atualizar(Convert.ToInt32(txtId.Text),txtNombre.Text,txtApellidos.Text,dtpFecha.Text));
+            c.cargarPersonas(DgvPersonas);
+        }
     }
 }

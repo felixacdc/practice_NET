@@ -78,5 +78,38 @@ namespace PruebaConexion
                 MessageBox.Show("No se pudo llenar el Datagridview: "+ex.ToString());
             }
         }
+
+        public void llenarTexBoxConsulta(int id,TextBox txtNombre,TextBox txtApellidos,DateTimePicker dtpFecha)
+        {
+            try
+            {
+                cmd = new SqlCommand("Select * from Persona where Id="+id+"",cn);
+                dr = cmd.ExecuteReader();
+                if(dr.Read())
+                {
+                    txtNombre.Text = dr["Nombre"].ToString();
+                    txtApellidos.Text = dr["Apellidos"].ToString();
+                    dtpFecha.Text = dr["FechaNacimiento"].ToString();
+
+                }
+                dr.Close();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("No se pudo llenar los campos: "+ex.ToString());
+            }
+        }
+
+        public string atualizar(int id,string nombre,string apellidos,string fecha)
+        {
+            string salida = "Se actualizaron los datos";
+            try {
+                cmd = new SqlCommand("Update Persona set Nombre ='"+nombre+"' ,Apellidos='"+apellidos+"', FechaNacimiento='"+fecha+"' where Id="+id+"",cn);
+                cmd.ExecuteNonQuery();
+            } catch(Exception ex) {
+                salida = "No se actualizo: " + ex.ToString();
+            }
+            return salida;
+        }
     }
 }
