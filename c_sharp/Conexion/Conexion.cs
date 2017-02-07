@@ -15,6 +15,8 @@ namespace PruebaConexion
         SqlConnection cm;
         SqlCommand cmd;
         SqlDataReader dr;
+        SqlDataAdapter da;
+        DataTable dt;
 
         public Conexion()
         {
@@ -63,6 +65,18 @@ namespace PruebaConexion
                 MessageBox.Show("No se pudo consultar bien: "+ex.ToString());
             }
             return contador;
+        }
+
+        public void cargarPersonas(DataGridView dgv)
+        {
+            try {
+                da = new SqlDataAdapter("Select * from Persona",cn);
+                dt = new DataTable();
+                da.Fill(dt);
+                dgv.DataSource = dt;
+            } catch(Exception ex) {
+                MessageBox.Show("No se pudo llenar el Datagridview: "+ex.ToString());
+            }
         }
     }
 }
