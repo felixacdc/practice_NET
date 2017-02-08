@@ -53,5 +53,40 @@ namespace Logica
                 persona.edad,
                 persona.fechaNacimiento);
         }
+
+        // metodo para mostrar los registros almacenados en la DB
+        public DataTable getPersonas()
+        {
+            string parametros[]={"@operacion", "@cedula"};
+            DatosSistema datos = new DatosSistema();
+            return datos.getDatosTabla("spPersonaSE", parametros, "Y", 0);
+        }
+
+        // metodo para eliminar
+        public int EliminarPersona(string cedula)
+        {
+            string parametros[]={"@operacion", "@cedula"};
+            DatosSistema datos = new DatosSistema();
+            return datos.getDatosTabla("spPersonaSE", parametros, "E", cedula);
+        }
+
+        // metodo para consultar un registro
+        public Persona getPersona(Persona p)
+        {
+            DatosSistema datos = new DatosSistema();
+            Persona persona = new Persona();
+            var dt = new DataTable();
+            string[] parametros = {"@operacion","@cedula"};
+            dt = datos.getDatosTabla("spPersonaSE", parametros, "S", p.cedula);
+            foreach(DataRow fila in dt.Rows)
+            {
+                persona.cedula = fila["cedula"].ToString();
+                persona.nombre = fila["nombre"].ToString();
+                persona.apellido = fila["apellido"].ToString();
+                persona.edad = fila["edad"].ToString();
+                persona.fechaNacimiento = Convert.ToDataTime(fila["fechaNacimiento"].ToString());
+            }
+            return persona;
+        }
     }
 }
