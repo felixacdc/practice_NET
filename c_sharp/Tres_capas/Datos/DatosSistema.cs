@@ -33,5 +33,29 @@ namespace Datos
             }
             return dt;
         }
+
+        // Metodo ejecutar procedimientos eje:inser,update,delete y select
+        public int Ejecutar(string nomprocedimento, string[] nomparametros, params Object[]valparametros)
+        {
+            Conexion con = new Conexion();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = con.getConexion();
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            if(nomprocedimento.Length!=0 && nomparametros.Length==valparametros.Length)
+            {
+                int i = 0;
+                foreach(string parametro in nomparametros)
+                    cmd.Parameters.AddWithValue(parametro,valparametros[i++]);
+
+                try {
+                    return cmd.ExecuteNonQuery();
+                } catch(Exception) {
+
+                }
+            }
+
+            return 0;
+        }
     }
 }
